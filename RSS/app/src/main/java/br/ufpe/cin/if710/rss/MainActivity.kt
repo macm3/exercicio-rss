@@ -10,7 +10,7 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
-class MainActivityAntigo : Activity() {
+class MainActivity : Activity() {
 
     private val RSS_FEED = "http://leopoldomt.com/if1001/g1brasil.xml"
 
