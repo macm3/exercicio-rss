@@ -22,7 +22,10 @@ class MainActivity : Activity() {
 
     //private val RSS_FEED = "http://leopoldomt.com/if1001/g1brasil.xml"
     //private var conteudoRSS: TextView? = null
-    private var RSS_FEED = "http://pox.globo.com/rss/g1/brasil/"
+    //private var RSS_FEED = "http://pox.globo.com/rss/g1/brasil/"
+
+    private var RSS_FEED: String? = null
+
     private var conteudoRSS: RecyclerView? = null
 
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -30,6 +33,8 @@ class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //pega do arquivo de strings
         conteudoRSS = findViewById(R.id.conteudoRSS)
         RSS_FEED = getString(R.string.rssfeed)
 
