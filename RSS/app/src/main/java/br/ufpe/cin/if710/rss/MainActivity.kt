@@ -22,15 +22,20 @@ class MainActivity : Activity() {
 
     //private val RSS_FEED = "http://leopoldomt.com/if1001/g1brasil.xml"
     //private var conteudoRSS: TextView? = null
-    private val RSSD_FEED_globo = "http://pox.globo.com/rss/g1/brasil/"
-    private var conteudoRSS_globo: RecyclerView? = null
+    private var RSS_FEED = "http://pox.globo.com/rss/g1/brasil/"
+    private var conteudoRSS: RecyclerView? = null
 
     private lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //conteudoRSS = findViewById(R.id.conteudoRSS)
+        conteudoRSS = findViewById(R.id.conteudoRSS)
+        RSS_FEED = getString(R.string.rssfeed)
+
+        linearLayoutManager = LinearLayoutManager(this)
+        //colocando tipo layout no recycler
+        conteudoRSS?.layoutManager = linearLayoutManager
     }
 
     override fun onStart() {
@@ -41,12 +46,12 @@ class MainActivity : Activity() {
             //conteudoRSS!!.text = feedXML
 
             doAsync {
-                val feedXML = parse(getRssFeed(RSSD_FEED_globo))
+                val feedXML = parse(getRssFeed(RSS_FEED!!))
                 //val adapter = MyAdapter(feedXML)
                 val adapter = MyAdapterCustom(feedXML)
                 uiThread {
                     //conteudoRSS!!.text = feedXML.toString()
-                    conteudoRSS_globo!!.adapter = adapter
+                    conteudoRSS!!.adapter = adapter
                 }
             }
 
