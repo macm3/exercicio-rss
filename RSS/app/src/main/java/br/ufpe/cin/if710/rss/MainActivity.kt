@@ -2,7 +2,12 @@ package br.ufpe.cin.if710.rss
 
 import android.app.Activity
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.widget.LinearLayout
 import android.widget.TextView
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -10,24 +15,41 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
+import br.ufpe.cin.if710.rss.ParserRSS.parse
+
+
 class MainActivity : Activity() {
 
-    private val RSS_FEED = "http://leopoldomt.com/if1001/g1brasil.xml"
+    //private val RSS_FEED = "http://leopoldomt.com/if1001/g1brasil.xml"
+    //private var conteudoRSS: TextView? = null
+    private val RSSD_FEED_globo = "http://pox.globo.com/rss/g1/brasil/"
+    private var conteudoRSS_globo: RecyclerView? = null
 
-    private var conteudoRSS: TextView? = null
+    private lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        conteudoRSS = findViewById(R.id.conteudoRSS)
+        //conteudoRSS = findViewById(R.id.conteudoRSS)
     }
 
     override fun onStart() {
         super.onStart()
         try {
             //Esse código dá pau, por fazer operação de rede na thread principal...
-            val feedXML = getRssFeed(RSS_FEED)
-            conteudoRSS!!.text = feedXML
+            //val feedXML = getRssFeed(RSS_FEED)
+            //conteudoRSS!!.text = feedXML
+
+            doAsync {
+                val feedXML = parse(getRssFeed(RSSD_FEED_globo))
+                //val adapter = MyAdapter(feedXML)
+                val adapter = MyAdapterCustom(feedXML)
+                uiThread {
+                    //conteudoRSS!!.text = feedXML.toString()
+                    conteudoRSS_globo!!.adapter = adapter
+                }
+            }
+
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -58,4 +80,6 @@ class MainActivity : Activity() {
         }
         return rssFeed
     }
+
+
 }
